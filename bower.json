@@ -1,0 +1,25 @@
+{
+  "name": "multivision",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Romeo Enso <romeo.enso93@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/renso3x/multivision",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.4",
+    "AngularJS-Toaster": "angularjs-toaster#^2.0.0",
+    "angular": "^1.5.5",
+    "angular-ui-router": "^0.3.0",
+    "bootstrap": "^3.3.6",
+  }
+}

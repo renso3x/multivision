@@ -12,3 +12,4 @@ app.module('mean', [
 ]).config(routes.config).run(routes.run);
 
 require('./directives');
+require('./modules/main');

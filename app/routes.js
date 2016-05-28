@@ -7,10 +7,7 @@ exports.config = function($stateProvider, $urlRouterProvider) {
 		.state('/', {
 			url: '/',
 			templateUrl: '/app/includes/layout.html',
-			controller: function($scope) {
-				console.log("loaded");
-				$scope.message = "HELLO WORLD";
-			}
+			controller: 'MainController'
 		});
 }
 

@@ -12,4 +12,6 @@ app.module('mean', [
 ]).config(routes.config).run(routes.run);
 
 require('./directives');
+require('./common/mvNotifier');
 require('./modules/main');
+require('./modules/account');

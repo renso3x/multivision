@@ -8,7 +8,7 @@ exports.config = function($stateProvider, $urlRouterProvider) {
 			url: '/',
 			templateUrl: '/app/includes/layout.html',
 			controller: 'MainController'
-		});
+		})
 }
 
 exports.run = function($state) {

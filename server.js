@@ -1,29 +1,49 @@
-const express = require("express");
-const app = express();
-const path = require("path");
-const morgan = require("morgan");
-const bodyParser = require("body-parser");
-const methodOverride = require("method-override");
-const mongoose = require("mongoose");
+const express = require("express"),
+	app = express(),
+	mongoose = require("mongoose"),
+	passport = require("passport"),
+	LocalStrategy = require("passport-local").Strategy;
 
+const config = require('./server/config/config')[app.get('env')];
 
-if(app.get('env') === 'development') {
-	// mongoose.connect('mongodb://localhost/multivision');
-	app.listen('9090', function() {
-		console.log("App launch in port: 9090!");
-	});
-} else {
-	// mongoose.connect('mongodb://multivision:multivision@ds017173.mlab.com:17173/multivision');
-}
+require('./server/config/express')(app, config);
 
-app.use('/static', express.static(__dirname + '/public'));
-app.use('/app', express.static(__dirname + '/app'));
-app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({'extended':'true'}));
-app.use(bodyParser.json());
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
-app.use(methodOverride());
+require('./server/config/mongoose')(config);
 
-app.get("/", function(req, res) {
-	res.sendFile(path.join(__dirname + '/public/index.html'));
+const User = mongoose.model('User');
+
+passport.use(new LocalStrategy(
+	function(username, password, done) {
+
+		User.findOne({username: username}).exec((err, user) => {
+			if(user) {
+				return done(null, user);
+			} else {
+				return done(null, false);
+			}
+		});
+	}
+));
+
+passport.serializeUser(function(user, done) {
+	if(user) {
+		done(null, user._id);
+	}
 });
+
+passport.deserializeUser(function(id, done) {
+	User.findOne({_id: id}).exec(function(err, user) {
+		if(user) {
+			return done(null, user);
+		} else {
+			return done(null, false);
+		}
+	});
+});
+
+require('./server/config/routes')(app, config);
+
+app.listen(config.port, function() {
+	console.log("App launch in port " + config.port);
+});
+

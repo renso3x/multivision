@@ -1,7 +1,12 @@
-var LoginController = function($scope, accountService, myToaster) {
+var LoginController = function($scope, accountService, myToaster, $location, $state) {
 	$scope.user = {};
 
-	$scope.signin = function() {
+	getAuthenticated();
+	$scope.identity = accountService;
+	$scope.signin = signin;
+	$scope.signOut = signOut;
+
+	function signin() {
 		accountService.authenticate($scope.user)
 			.then(function(resp) {
 				if(resp.success) {
@@ -13,8 +18,21 @@ var LoginController = function($scope, accountService, myToaster) {
 			});
 	}
 
-	$scope.identity = accountService;
+	function signOut() {
+		accountService.logoutUser().then(function() {
+			$scope.user = {};
+			accountService.currentUser = undefined;
+			myToaster.notify('success', 'You have signed out!');
+			$location.path('/login');
+		});
+	}
 
+	function getAuthenticated() {
+		accountService.getAuthenticatedUser()
+			.then(function(resp) {
+				accountService.currentUser = resp.data;
+			});
+	}
 }
 
 module.exports = LoginController;

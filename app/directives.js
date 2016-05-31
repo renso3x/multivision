@@ -1,11 +1,22 @@
 var app = require("angular");
 
 app.module('mean')
-	.directive('styleSheets', styleSheets)
+	.directive('stylesheets', stylesheets)
+	.directive('dropdownToggle', dropdownToggle)
 
-function styleSheets() {
+function stylesheets() {
 	return {
 		restrict: 'EA',
 		templateUrl: '/app/includes/styles.html',
 	}
 }
+
+function dropdownToggle() {
+	return {
+		restrict: 'EA',
+		link: function(scope, elem, attrs) {
+			elem.dropdown();
+		}
+	}
+}
+

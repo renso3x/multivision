@@ -16,4 +16,20 @@ exports.authenticate = (req, res, next) => {
 		})
 	});
 	auth(req, res, next);
+};
+
+exports.signout = (req, res) => {
+	req.logout();
+	res.end();
+};
+
+exports.requiresRole = function(role) {
+	return function(req, res, next) {
+		if(!req.isAuthenticated() || req.user.roles.indexOf(role) === -1) {
+			res.sendStatus(403);
+			res.end();
+		} else {
+			next();
+		}
+	}
 }
